@@ -78,7 +78,7 @@ class SnackbarProvider extends Component {
                     return state;
                 }
             }else{
-                if (preventDuplicate === undefined && _this.props.preventDuplicate || preventDuplicate) {
+                if (preventDuplicate === undefined && this.props.preventDuplicate || preventDuplicate) {
                     var compareFunction = function compareFunction(item) {
                         return item.message === message;
                     };
