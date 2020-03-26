@@ -63,15 +63,30 @@ class SnackbarProvider extends Component {
         }
 
         this.setState((state) => {
-            if ((preventDuplicate === undefined && this.props.preventDuplicate) || preventDuplicate) {
-                const compareFunction = item => (
-                    userSpecifiedKey ? item.key === key : item.message === message
-                );
-
-                const inQueue = state.queue.findIndex(compareFunction) > -1;
-                const inView = state.snacks.findIndex(compareFunction) > -1;
-                if (inQueue || inView) {
+            if(userSpecifiedKey){
+                var compareFunction = function compareFunction(item) {
+                    return item.key === key;
+                };
+                var idx = state.queue.findIndex(compareFunction);
+                if (idx > -1) {
+                    state.queue[idx].message = snack.message;
                     return state;
+                }
+                var idx = state.snacks.findIndex(compareFunction);
+                if (idx > -1) {
+                    state.snacks[idx].message = snack.message;
+                    return state;
+                }
+            }else{
+                if (preventDuplicate === undefined && _this.props.preventDuplicate || preventDuplicate) {
+                    var compareFunction = function compareFunction(item) {
+                        return item.message === message;
+                    };
+                    var inQueue = state.queue.findIndex(compareFunction) > -1;
+                    var inView = state.snacks.findIndex(compareFunction) > -1;
+                    if (inQueue || inView) {
+                        return state;
+                    }
                 }
             }
 
