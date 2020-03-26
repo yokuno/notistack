@@ -18,7 +18,7 @@
     "scripts": {
         "build": "set NODE_ENV=production&&set BABEL_ENV=production&&babel src -d build --copy-files",
         "prebuild": "rimraf build",
-        "prepublishOnly": "npm run build",
+        "prepare": "npm run build",
         "eslint": "eslint . --ext .js,.jsx"
     },
     "peerDependencies": {
