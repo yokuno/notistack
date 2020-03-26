@@ -73,9 +73,9 @@ var SnackbarProvider = function (_Component) {
     function SnackbarProvider(props) {
         _classCallCheck(this, SnackbarProvider);
 
-        var _this2 = _possibleConstructorReturn(this, (SnackbarProvider.__proto__ || Object.getPrototypeOf(SnackbarProvider)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (SnackbarProvider.__proto__ || Object.getPrototypeOf(SnackbarProvider)).call(this, props));
 
-        _this2.enqueueSnackbar = function (message) {
+        _this.enqueueSnackbar = function (message) {
             var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
             var key = _ref.key,
@@ -91,15 +91,15 @@ var SnackbarProvider = function (_Component) {
                 open: true,
                 entered: false,
                 requestClose: false,
-                variant: options.variant || _this2.props.variant,
-                anchorOrigin: options.anchorOrigin || _this2.props.anchorOrigin
+                variant: options.variant || _this.props.variant,
+                anchorOrigin: options.anchorOrigin || _this.props.anchorOrigin
             });
 
             if (options.persist) {
                 snack.autoHideDuration = undefined;
             }
 
-            _this2.setState(function (state) {
+            _this.setState(function (state) {
                 if (userSpecifiedKey) {
                     var compareFunction = function compareFunction(item) {
                         return item.key === key;
@@ -127,7 +127,7 @@ var SnackbarProvider = function (_Component) {
                     }
                 }
 
-                return _this2.handleDisplaySnack(_extends({}, state, {
+                return _this.handleDisplaySnack(_extends({}, state, {
                     queue: [].concat(_toConsumableArray(state.queue), [snack])
                 }));
             });
@@ -135,16 +135,16 @@ var SnackbarProvider = function (_Component) {
             return id;
         };
 
-        _this2.handleDisplaySnack = function (state) {
+        _this.handleDisplaySnack = function (state) {
             var snacks = state.snacks;
 
-            if (snacks.length >= _this2.props.maxSnack) {
-                return _this2.handleDismissOldest(state);
+            if (snacks.length >= _this.props.maxSnack) {
+                return _this.handleDismissOldest(state);
             }
-            return _this2.processQueue(state);
+            return _this.processQueue(state);
         };
 
-        _this2.processQueue = function (state) {
+        _this.processQueue = function (state) {
             var queue = state.queue,
                 snacks = state.snacks;
 
@@ -157,7 +157,7 @@ var SnackbarProvider = function (_Component) {
             return state;
         };
 
-        _this2.handleDismissOldest = function (state) {
+        _this.handleDismissOldest = function (state) {
             if (state.snacks.some(function (item) {
                 return !item.open || item.requestClose;
             })) {
@@ -171,7 +171,7 @@ var SnackbarProvider = function (_Component) {
                 return acc + (current.open && current.persist ? 1 : 0);
             }, 0);
 
-            if (persistentCount === _this2.props.maxSnack) {
+            if (persistentCount === _this.props.maxSnack) {
                 (0, _warning2.default)(_constants.MESSAGES.NO_PERSIST_ALL);
                 ignore = true;
             }
@@ -187,7 +187,7 @@ var SnackbarProvider = function (_Component) {
                     }
 
                     if (item.onClose) item.onClose(null, _constants.REASONS.MAXSNACK, item.key);
-                    if (_this2.props.onClose) _this2.props.onClose(null, _constants.REASONS.MAXSNACK, item.key);
+                    if (_this.props.onClose) _this.props.onClose(null, _constants.REASONS.MAXSNACK, item.key);
 
                     return _extends({}, item, {
                         open: false
@@ -200,12 +200,12 @@ var SnackbarProvider = function (_Component) {
             return _extends({}, state, { snacks: snacks });
         };
 
-        _this2.handleEnteredSnack = function (node, isAppearing, key) {
-            if (_this2.props.onEntered) {
-                _this2.props.onEntered(node, isAppearing, key);
+        _this.handleEnteredSnack = function (node, isAppearing, key) {
+            if (_this.props.onEntered) {
+                _this.props.onEntered(node, isAppearing, key);
             }
 
-            _this2.setState(function (_ref2) {
+            _this.setState(function (_ref2) {
                 var snacks = _ref2.snacks;
                 return {
                     snacks: snacks.map(function (item) {
@@ -215,15 +215,15 @@ var SnackbarProvider = function (_Component) {
             });
         };
 
-        _this2.handleCloseSnack = function (event, reason, key) {
-            if (_this2.props.onClose) {
-                _this2.props.onClose(event, reason, key);
+        _this.handleCloseSnack = function (event, reason, key) {
+            if (_this.props.onClose) {
+                _this.props.onClose(event, reason, key);
             }
 
             if (reason === _constants.REASONS.CLICKAWAY) return;
             var shouldCloseAll = key === undefined;
 
-            _this2.setState(function (_ref3) {
+            _this.setState(function (_ref3) {
                 var snacks = _ref3.snacks,
                     queue = _ref3.queue;
                 return {
@@ -241,21 +241,21 @@ var SnackbarProvider = function (_Component) {
             });
         };
 
-        _this2.closeSnackbar = function (key) {
+        _this.closeSnackbar = function (key) {
             // call individual snackbar onClose callback passed through options parameter
-            var toBeClosed = _this2.state.snacks.find(function (item) {
+            var toBeClosed = _this.state.snacks.find(function (item) {
                 return item.key === key;
             });
             if (toBeClosed && toBeClosed.onClose) {
                 toBeClosed.onClose(null, _constants.REASONS.INSTRUCTED, key);
             }
 
-            _this2.handleCloseSnack(null, _constants.REASONS.INSTRUCTED, key);
+            _this.handleCloseSnack(null, _constants.REASONS.INSTRUCTED, key);
         };
 
-        _this2.handleExitedSnack = function (event, key) {
-            _this2.setState(function (state) {
-                var newState = _this2.processQueue(_extends({}, state, {
+        _this.handleExitedSnack = function (event, key) {
+            _this.setState(function (state) {
+                var newState = _this.processQueue(_extends({}, state, {
                     snacks: state.snacks.filter(function (item) {
                         return item.key !== key;
                     })
@@ -265,23 +265,23 @@ var SnackbarProvider = function (_Component) {
                     return newState;
                 }
 
-                return _this2.handleDismissOldest(newState);
+                return _this.handleDismissOldest(newState);
             });
 
-            if (_this2.props.onExited) {
-                _this2.props.onExited(event, key);
+            if (_this.props.onExited) {
+                _this.props.onExited(event, key);
             }
         };
 
-        _this2.state = {
+        _this.state = {
             snacks: [],
             queue: [], // eslint-disable-line react/no-unused-state
             contextValue: {
-                enqueueSnackbar: _this2.enqueueSnackbar,
-                closeSnackbar: _this2.closeSnackbar
+                enqueueSnackbar: _this.enqueueSnackbar,
+                closeSnackbar: _this.closeSnackbar
             }
         };
-        return _this2;
+        return _this;
     }
 
     /**
@@ -352,7 +352,7 @@ var SnackbarProvider = function (_Component) {
     _createClass(SnackbarProvider, [{
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this2 = this;
 
             var _props = this.props,
                 classes = _props.classes,
@@ -394,9 +394,9 @@ var SnackbarProvider = function (_Component) {
                             snack: snack,
                             iconVariant: iconVariant,
                             classes: getClasses(classes),
-                            onClose: _this3.handleCloseSnack,
-                            onExited: _this3.handleExitedSnack,
-                            onEntered: _this3.handleEnteredSnack
+                            onClose: _this2.handleCloseSnack,
+                            onExited: _this2.handleExitedSnack,
+                            onEntered: _this2.handleEnteredSnack
                         }));
                     })
                 );
